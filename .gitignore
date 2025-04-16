@@ -1,0 +1,38 @@
+# Node.js dependencies
+node_modules/
+
+# Optional npm logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+# .env.staging
+# .env.production
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Temporary files
+*.swp
+*.swo
+
+# Build artifacts
+/dist
+/build
+
+# IDE configurations
+.vscode/
+.idea/
+
+# Coverage directory for testing
+coverage/
+
+# Cache
+/.cache
