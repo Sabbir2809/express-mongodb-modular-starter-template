@@ -77,6 +77,7 @@ const globalErrorHandler: ErrorRequestHandler = (
   // response error
   res.status(errorResponse.statusCode).json({
     success: false,
+    statusCode: errorResponse.statusCode,
     message: errorResponse.message,
     errorMessage: errorResponse.errorMessage,
     errorDetails: errorResponse.errorDetails,

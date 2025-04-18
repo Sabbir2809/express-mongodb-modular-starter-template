@@ -19,7 +19,7 @@ const checkAuth = (...requiredRoles: string[]) => {
     // check if the token is valid
     let decodedToken;
     try {
-      decodedToken = verifyToken(token, config.jwt_access_secret as string);
+      decodedToken = verifyToken(token, config.jwt_access_secret_key);
     } catch (error) {
       throw new AuthError(401, "Unauthorized!");
     }
@@ -44,7 +44,7 @@ const checkAuth = (...requiredRoles: string[]) => {
     }
 
     // decoded
-    (req as any).user = decodedToken as JwtPayload;
+    (req as any).user = decodedToken;
     next();
   });
 };

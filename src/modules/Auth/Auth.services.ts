@@ -34,17 +34,14 @@ const loginFromDB = async (payload: IUser) => {
     role: user.role,
   };
   // access token
-  const accessToken = createToken(
-    jwtPayload,
-    config.jwt_access_secret as string,
-    config.jwt_access_expires_in_secret as string
-  );
+  const accessToken = createToken(jwtPayload, config.jwt_access_secret_key, {
+    expiresIn: config.jwt_access_expires_in,
+  });
+
   // refresh token
-  const refreshToken = createToken(
-    jwtPayload,
-    config.jwt_refresh_secret as string,
-    config.jwt_refresh_expires_in_secret as string
-  );
+  const refreshToken = createToken(jwtPayload, config.jwt_refresh_secret_key, {
+    expiresIn: config.jwt_refresh_expires_in,
+  });
 
   return {
     accessToken,

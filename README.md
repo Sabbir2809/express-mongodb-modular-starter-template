@@ -32,20 +32,30 @@
 3. Setup environment variables in `.env`.
 
    ```bash
-    NODE_ENVIRONMENT=your_environment
-    PORT=500
-    CORS_ORIGIN=your_client_url
-    DATABASE_URL=your_database_url
+    NODE_ENVIRONMENT=
 
-    BCRYPT_SALT_ROUNDS=your_bcrypt_salt_rounds
-    JWT_SECRET=your_jwt_secret
-    JWT_EXPIRES_IN=your_jwt_expires_in
-    REFRESH_JWT_SECRET=your_refresh_jwt_secret
-    REFRESH_JWT_EXPIRES_IN=your_refresh_jwt_expires_in
+    PORT=
+    DATABASE_URL=
+    CORS_ORIGIN=
 
-    CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
-    CLOUDINARY_API_KEY=your_cloudinary_api_key
-    CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+    # password
+    BCRYPT_SALT_ROUNDS=
+
+    # JWT
+    JWT_SECRET_KEY=
+    JWT_EXPIRES_IN=
+    REFRESH_JWT_SECRET_KEY=
+    REFRESH_JWT_EXPIRES_IN=
+
+    # Cloudinary configuration
+    CLOUDINARY_CLOUD_NAME=
+    CLOUDINARY_API_KEY=
+    CLOUDINARY_API_SECRET=
+
+    # ImageKit configuration
+    IMAGEKIT_PUBLIC_KEY=
+    IMAGEKIT_PRIVATE_KEY=
+    IMAGEKIT_PUBLIC_URL_ENDPOINT_KEY=
    ```
 
 4. Run the development server:
