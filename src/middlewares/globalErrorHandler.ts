@@ -9,13 +9,19 @@ import handleDuplicateError from "../utils/errors/handleDuplicateError";
 import handleValidationError from "../utils/errors/handleValidationError";
 import handleZodError from "../utils/errors/handleZodError";
 
-const globalErrorHandler: ErrorRequestHandler = (error, req, res): void => {
+const globalErrorHandler: ErrorRequestHandler = (
+  error,
+  req,
+  res,
+  next
+): void => {
   // default object
   const errorResponse: IErrorResponse = {
     statusCode: error.statusCode || 500,
-    message: "Internal Server Error",
+    error: "Internal Server Error",
     errorMessage: error.message,
-    errorDetails: error.errors,
+    errorDetails:
+      config.node_environment === "development" ? error.errors : null,
     stack: config.node_environment === "development" ? error?.stack : null,
   };
 
@@ -23,7 +29,7 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res): void => {
   if (error instanceof ZodError) {
     const simplifiedError = handleZodError(error);
     errorResponse.statusCode = simplifiedError?.statusCode;
-    errorResponse.message = simplifiedError?.message;
+    errorResponse.error = simplifiedError?.message;
     errorResponse.errorMessage = simplifiedError?.errorMessage;
     errorResponse.errorDetails = simplifiedError?.errorDetails;
   }
@@ -31,49 +37,41 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res): void => {
   else if (error?.name === "ValidationError") {
     const simplifiedError = handleValidationError(error);
     errorResponse.statusCode = simplifiedError?.statusCode;
-    errorResponse.message = simplifiedError?.message;
+    errorResponse.error = simplifiedError?.message;
     errorResponse.errorDetails = simplifiedError?.errorDetails;
   }
   // CastError
   else if (error?.name === "CastError") {
     const simplifiedError = handleCastError(error);
     errorResponse.statusCode = simplifiedError?.statusCode;
-    errorResponse.message = simplifiedError?.errorMessage;
+    errorResponse.error = simplifiedError?.errorMessage;
     errorResponse.errorDetails = simplifiedError?.errorDetails;
   }
   // DuplicateError
   else if (error?.code === 11000) {
     const simplifiedError = handleDuplicateError(error);
     errorResponse.statusCode = simplifiedError?.statusCode;
-    errorResponse.message = simplifiedError?.message;
+    errorResponse.error = simplifiedError?.message;
     errorResponse.errorMessage = simplifiedError?.errorMessage;
     errorResponse.errorDetails = simplifiedError?.errorDetails;
   }
   // AppError
   else if (error instanceof AppError) {
     errorResponse.statusCode = error.statusCode;
-    errorResponse.message = error?.message;
-    errorResponse.errorDetails = [
-      {
-        path: "",
-        message: error?.message,
-      },
-    ];
+    errorResponse.error = error?.message;
   }
   // AuthError
   else if (error instanceof AuthError) {
     errorResponse.statusCode = error.statusCode;
-    errorResponse.message = "Unauthorized Access";
+    errorResponse.error = "Unauthorized!";
     errorResponse.errorMessage = error?.message;
-    errorResponse.errorDetails = null;
-    errorResponse.stack = null;
   }
 
   // response error
   res.status(errorResponse.statusCode).json({
     success: false,
     statusCode: errorResponse.statusCode,
-    message: errorResponse.message,
+    error: errorResponse.error,
     errorMessage: errorResponse.errorMessage,
     errorDetails: errorResponse.errorDetails,
     stack: errorResponse.stack,

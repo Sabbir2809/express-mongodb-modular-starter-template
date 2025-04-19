@@ -15,9 +15,7 @@ export default {
 
   // JWT
   jwt_access_secret_key: process.env.JWT_ACCESS_SECRET_KEY!,
-  jwt_access_expires_in: process.env.JWT_ACCESS_EXPIRES_IN!,
   jwt_refresh_secret_key: process.env.JWT_REFRESH_SECRET_KEY!,
-  jwt_refresh_expires_in: process.env.JWT_REFRESH_EXPIRES_IN!,
 
   // Cloudinary configuration
   cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME!,

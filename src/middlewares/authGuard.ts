@@ -1,14 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextFunction, Request, Response } from "express";
-import { JwtPayload } from "jsonwebtoken";
 import config from "../config";
 import { User } from "../modules/Auth/Auth.model";
 import catchAsync from "../utils/catchAsync";
-import AppError from "../utils/errors/AppError";
 import AuthError from "../utils/errors/AuthError";
-import { verifyToken } from "../utils/jwt";
+import { jwtUtils } from "../utils/jwtUtils";
 
-const checkAuth = (...requiredRoles: string[]) => {
+const authGuard = (...requiredRoles: string[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     // headers token
     const token = req.headers.authorization;
@@ -22,26 +19,29 @@ const checkAuth = (...requiredRoles: string[]) => {
     // check if the token is valid
     let decodedToken;
     try {
-      decodedToken = verifyToken(token, config.jwt_access_secret_key);
+      decodedToken = jwtUtils.verifyToken(token, config.jwt_access_secret_key);
     } catch (error) {
+      throw new AuthError(401, "Unauthorized");
+    }
+
+    // decoded token
+    const { userId, role, iat } = decodedToken;
+
+    // Expired date
+    if (!iat) {
       throw new AuthError(
         401,
         "Session Expired or Invalid. Please Login Again To Continue."
       );
     }
 
-    // decoded token
-    const { userId, role, iat } = decodedToken as JwtPayload;
-
-    // Expired date
-    if (!iat) {
-      throw new AuthError(401, "Token Expired! Please Login");
-    }
-
     // Authentication
     const user = await User.findById(userId);
     if (!user) {
-      throw new AppError(400, "User Not Found! Please Register or Login");
+      throw new AuthError(
+        401,
+        "User Not Found! Please register before logging"
+      );
     }
 
     // authorization
@@ -50,9 +50,9 @@ const checkAuth = (...requiredRoles: string[]) => {
     }
 
     // decoded
-    (req as any).user = decodedToken;
+    req.user = decodedToken;
     next();
   });
 };
 
-export default checkAuth;
+export default authGuard;

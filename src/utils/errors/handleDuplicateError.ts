@@ -5,7 +5,7 @@ const handleDuplicateError = (error: any) => {
 
   return {
     statusCode,
-    message: "Duplicate Error",
+    message: "Duplicate Error!",
     errorMessage: `Duplicate value for ${extractedMessage}`,
     errorDetails: error,
   };

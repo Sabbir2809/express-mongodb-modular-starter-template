@@ -6,8 +6,8 @@ const handleCastError = (error: mongoose.Error.CastError) => {
 
   return {
     statusCode,
-    message: "Invalid ID",
-    errorMessage: `${errorMessage}  is not a valid ID!`,
+    message: "Invalid ID!",
+    errorMessage: `${errorMessage}  is not a valid Id`,
     errorDetails: error,
   };
 };

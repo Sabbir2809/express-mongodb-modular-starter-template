@@ -3,12 +3,12 @@ export interface IUser {
   firstName: string;
   lastName: string;
   phoneNumber: string;
+  isPhoneVerified: boolean;
   email: string;
+  isEmailVerified: boolean;
   password: string;
   role: "USER" | "ADMIN" | "MODERATOR" | "SUPER_ADMIN";
   status: "ACTIVE" | "INACTIVE" | "BLOCKED" | "PENDING_VERIFICATION";
-  isPhoneVerified: boolean;
-  isEmailVerified: boolean;
   profileImage?: string;
   address?: string;
   dateOfBirth?: Date;

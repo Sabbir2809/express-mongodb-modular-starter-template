@@ -6,7 +6,7 @@ const handleValidationError = (error: mongoose.Error.ValidationError) => {
 
   return {
     statusCode,
-    message: "Validation Error",
+    message: "Validation Error!",
     errorDetails,
   };
 };

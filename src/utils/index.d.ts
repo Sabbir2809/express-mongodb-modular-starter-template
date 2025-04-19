@@ -10,7 +10,7 @@ declare global {
 
 interface IErrorResponse {
   statusCode: number;
-  message: string;
+  error: string;
   errorMessage: string;
   errorDetails: any | null;
   stack: any | null;
