@@ -16,7 +16,7 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res): void => {
     message: "Internal Server Error",
     errorMessage: error.message,
     errorDetails: error.errors,
-    stack: config.node_environment === "staging" ? error?.stack : null,
+    stack: config.node_environment === "development" ? error?.stack : null,
   };
 
   // ZodError

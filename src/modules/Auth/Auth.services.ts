@@ -8,7 +8,7 @@ const registrationIntoDB = async (payload: IUser) => {
   // checking if the user is exist
   const user = await User.findOne({ phoneNumber: payload.phoneNumber });
   if (user) {
-    throw new AppError(403, "This User is Already Exists!");
+    throw new AppError(409, "This User is Already Exists!");
   }
 
   // user data save into db
@@ -25,7 +25,7 @@ const loginFromDB = async (payload: IUser) => {
   // checking if the user is exist
   const user = await User.findOne({ phoneNumber });
   if (!user) {
-    throw new AppError(403, "Oops! Access denied. User profile not found.");
+    throw new AppError(404, "User Not Found! Please Register");
   }
 
   // create JWT token and sent to the client

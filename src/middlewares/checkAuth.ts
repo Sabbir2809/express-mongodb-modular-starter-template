@@ -13,7 +13,10 @@ const checkAuth = (...requiredRoles: string[]) => {
     // headers token
     const token = req.headers.authorization;
     if (!token) {
-      throw new AuthError(401, "No JWT is provided in the request headers");
+      throw new AuthError(
+        401,
+        "Authorization token is required! Please Login."
+      );
     }
 
     // check if the token is valid
@@ -21,7 +24,10 @@ const checkAuth = (...requiredRoles: string[]) => {
     try {
       decodedToken = verifyToken(token, config.jwt_access_secret_key);
     } catch (error) {
-      throw new AuthError(401, "Unauthorized!");
+      throw new AuthError(
+        401,
+        "Session Expired or Invalid. Please Login Again To Continue."
+      );
     }
 
     // decoded token
@@ -29,18 +35,18 @@ const checkAuth = (...requiredRoles: string[]) => {
 
     // Expired date
     if (!iat) {
-      throw new AuthError(401, "The provided JWT (JSON Web Token) has expired");
+      throw new AuthError(401, "Token Expired! Please Login");
     }
 
     // Authentication
     const user = await User.findById(userId);
     if (!user) {
-      throw new AuthError(404, "User Not Found");
+      throw new AppError(400, "User Not Found! Please Register or Login");
     }
 
     // authorization
     if (requiredRoles && !requiredRoles.includes(role)) {
-      throw new AppError(401, "You are not authorized!");
+      throw new AuthError(403, "Forbidden Access!");
     }
 
     // decoded

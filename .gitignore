@@ -8,7 +8,7 @@ yarn-error.log*
 
 # Environment files
 .env
-# .env.staging
+# .env.development
 # .env.production
 
 # Operating System files
