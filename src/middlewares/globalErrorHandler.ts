@@ -1,7 +1,7 @@
 import { ErrorRequestHandler } from "express";
 import { ZodError } from "zod";
-import { IErrorResponse } from "..";
 import config from "../config";
+import { IErrorResponse } from "../utils";
 import AppError from "../utils/errors/AppError";
 import AuthError from "../utils/errors/AuthError";
 import handleCastError from "../utils/errors/handleCastError";
@@ -9,12 +9,7 @@ import handleDuplicateError from "../utils/errors/handleDuplicateError";
 import handleValidationError from "../utils/errors/handleValidationError";
 import handleZodError from "../utils/errors/handleZodError";
 
-const globalErrorHandler: ErrorRequestHandler = (
-  error,
-  req,
-  res,
-  next
-): void => {
+const globalErrorHandler: ErrorRequestHandler = (error, req, res): void => {
   // default object
   const errorResponse: IErrorResponse = {
     statusCode: error.statusCode || 500,

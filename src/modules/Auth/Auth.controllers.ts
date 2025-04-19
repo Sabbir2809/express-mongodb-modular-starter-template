@@ -28,8 +28,8 @@ const login = catchAsync(async (req: Request, res: Response) => {
 
   // send response
   sendResponse(res, {
-    statusCode: 200,
     success: true,
+    statusCode: 200,
     message: "User login successful",
     data: { accessToken, refreshToken },
   });
