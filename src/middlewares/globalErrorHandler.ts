@@ -1,13 +1,13 @@
 import { ErrorRequestHandler } from "express";
 import { ZodError } from "zod";
+import { IErrorResponse } from "..";
 import config from "../config";
-import AppError from "../errors/AppError";
-import AuthError from "../errors/AuthError";
-import handleCastError from "../errors/handleCastError";
-import handleDuplicateError from "../errors/handleDuplicateError";
-import handleValidationError from "../errors/handleValidationError";
-import handleZodError from "../errors/handleZodError";
-import { TErrorResponse } from "../types/error";
+import AppError from "../utils/errors/AppError";
+import AuthError from "../utils/errors/AuthError";
+import handleCastError from "../utils/errors/handleCastError";
+import handleDuplicateError from "../utils/errors/handleDuplicateError";
+import handleValidationError from "../utils/errors/handleValidationError";
+import handleZodError from "../utils/errors/handleZodError";
 
 const globalErrorHandler: ErrorRequestHandler = (
   error,
@@ -16,7 +16,7 @@ const globalErrorHandler: ErrorRequestHandler = (
   next
 ): void => {
   // default object
-  const errorResponse: TErrorResponse = {
+  const errorResponse: IErrorResponse = {
     statusCode: error.statusCode || 500,
     message: "Internal Server Error",
     errorMessage: error.message,

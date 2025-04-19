@@ -7,3 +7,11 @@ declare global {
     }
   }
 }
+
+interface IErrorResponse {
+  statusCode: number;
+  message: string;
+  errorMessage: string;
+  errorDetails: any | null;
+  stack: any | null;
+}

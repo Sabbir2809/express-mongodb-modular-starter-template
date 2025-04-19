@@ -1,7 +1,7 @@
 import config from "../../config";
-import AppError from "../../errors/AppError";
+import AppError from "../../utils/errors/AppError";
 import { createToken } from "../../utils/jwt";
-import { IUser } from "./Auth.interfaces";
+import { IUser } from "./Auth.interface";
 import { User } from "./Auth.model";
 
 const registrationIntoDB = async (payload: IUser) => {

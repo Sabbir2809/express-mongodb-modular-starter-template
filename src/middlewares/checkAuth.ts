@@ -2,10 +2,10 @@
 import { NextFunction, Request, Response } from "express";
 import { JwtPayload } from "jsonwebtoken";
 import config from "../config";
-import AppError from "../errors/AppError";
-import AuthError from "../errors/AuthError";
 import { User } from "../modules/Auth/Auth.model";
 import catchAsync from "../utils/catchAsync";
+import AppError from "../utils/errors/AppError";
+import AuthError from "../utils/errors/AuthError";
 import { verifyToken } from "../utils/jwt";
 
 const checkAuth = (...requiredRoles: string[]) => {
