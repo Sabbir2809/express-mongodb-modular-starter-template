@@ -10,9 +10,7 @@ const registration = z.object({
 
 const refreshToken = z.object({
   cookies: z.object({
-    refreshToken: z.string({
-      required_error: "Refresh Token is required",
-    }),
+    refreshToken: z.string().nonempty("Refresh Token is required"),
   }),
 });
 

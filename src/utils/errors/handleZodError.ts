@@ -2,9 +2,9 @@ import { ZodError } from "zod";
 
 const handleZodError = (error: ZodError) => {
   const statusCode = 400;
-  const errorMessage = error.errors
-    .map((item) => `${item.path}, ${item.message}`)
-    .toString();
+  const errorMessage = error.issues
+    .map((item) => `${item.path.join(".")} - ${item.message}`)
+    .join(", ");
 
   return {
     statusCode,
