@@ -1,25 +1,26 @@
 import { Schema, model } from "mongoose";
+import { ALL_USER_ROLES } from "./Auth.constant";
 import { IUser } from "./Auth.interface";
 
 const userSchema = new Schema<IUser>(
   {
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    phoneNumber: { type: String, unique: true, required: true },
-    isPhoneVerified: { type: Boolean, default: false },
+    fullName: { type: String, required: true },
+    email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     role: {
       type: String,
-      enum: ["USER", "ADMIN", "MODERATOR", "SUPER_ADMIN"],
+      enum: [...ALL_USER_ROLES],
       default: "USER",
     },
     status: {
-      type: String,
-      enum: ["ACTIVE", "INACTIVE", "BLOCKED", "PENDING_VERIFICATION"],
-      default: "ACTIVE",
+      type: Boolean,
+      default: true,
     },
-    // email: { type: String, unique: true, required: true },
+    passwordResetToken: { type: String },
+    passwordResetExpires: { type: Date },
     // isEmailVerified: { type: Boolean, default: false },
+    // phoneNumber: { type: String, unique: true, required: true },
+    // isPhoneVerified: { type: Boolean, default: false },
     // profileImage: { type: String },
     // address: { type: String },
     // dateOfBirth: { type: Date },

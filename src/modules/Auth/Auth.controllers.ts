@@ -64,9 +64,53 @@ const myProfile = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const changePassword = catchAsync(async (req: Request, res: Response) => {
+  const { userId } = req.user as JwtPayload;
+  const { oldPassword, newPassword } = req.body;
+
+  const result = await AuthServices.changePasswordInDB(
+    userId,
+    oldPassword,
+    newPassword
+  );
+
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: result.message,
+  });
+});
+
+const forgetPassword = catchAsync(async (req: Request, res: Response) => {
+  const { email } = req.body;
+
+  const result = await AuthServices.forgetPasswordFromDB(email);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: result.message,
+  });
+});
+
+const resetPassword = catchAsync(async (req: Request, res: Response) => {
+  const { token, newPassword } = req.body;
+
+  const result = await AuthServices.resetPasswordInDB(token, newPassword);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: result.message,
+  });
+});
+
 export const AuthControllers = {
   registration,
   login,
   refreshToken,
   myProfile,
+  changePassword,
+  forgetPassword,
+  resetPassword,
 };

@@ -3,6 +3,7 @@ import cors from "cors";
 import express, { Application, Request, Response } from "express";
 import helmet from "helmet";
 import config from "./config";
+import { setupSwaggerDocs } from "./docs";
 import globalErrorHandler from "./middlewares/globalErrorHandler";
 import notFound from "./middlewares/notFound";
 import rateLimiter from "./middlewares/rateLimiter";
@@ -12,32 +13,34 @@ import router from "./routes/router";
 const app: Application = express();
 
 // ---------- Global Middlewares ----------
-app.use(rateLimiter); // Rate limiting for all requests
-app.use(helmet()); // Set security-related HTTP headers
+app.use(rateLimiter);
+app.use(helmet());
 app.use(
   cors({
-    origin: config.cors_origin ?? "*", // Allow all origins or use a specific origin from config
-    credentials: true, // Allow cookies to be sent with requests
+    origin: config.cors_origin ?? "*",
+    credentials: true,
   })
 );
-app.use(cookieParser()); // Parse cookies from incoming requests
-app.use(express.json()); // Parse incoming JSON payloads
+app.use(cookieParser());
+app.use(express.json());
 
 // ---------- Application Routes ----------
 app.use("/api/v1", router);
 
-// Health Check Endpoint (used to check if the server is running)
+// ---------- Swagger API Docs ----------
+setupSwaggerDocs(app);
+
+// Health Check Endpoint
 app.get("/", (req: Request, res: Response) => {
   res.status(200).json({
     success: true,
-    message: "ALL IS WELL! ✅",
+    statusCode: 200,
+    message: "🚀 Server is up and running",
   });
 });
 
 // ---------- Error Handling ----------
-// Global error handler middleware (handles errors in the application)
 app.use(globalErrorHandler);
-// 404 Not Found Handler (middleware for unknown routes)
 app.use(notFound);
 
 export default app;

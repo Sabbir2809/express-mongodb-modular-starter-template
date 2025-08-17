@@ -3,33 +3,44 @@ import mongoose from "mongoose";
 import app from "./app";
 import config from "./config";
 
-let SERVER: Server;
-// main server: database connection
-async function server() {
-  try {
-    await mongoose.connect(config.database_url as string);
-    SERVER = app.listen(config.port, () => {
-      console.log(`🚀 Server is Running on http://localhost:${config.port}`);
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-server();
+let server: Server;
 
-// unhandledRejection
-process.on("unhandledRejection", () => {
-  console.log("unhandledRejection on is detected, shutting down!");
-  if (SERVER) {
-    SERVER.close(() => {
-      process.exit(1);
-    });
-  }
-  process.exit(1);
+// 🔴 Handle uncaught exceptions (synchronous errors)
+process.on("uncaughtException", (err) => {
+  console.error("❌ Uncaught Exception detected:", err);
+  process.exit(1); // Exit immediately
 });
 
-// uncaughtException
-process.on("uncaughtException", () => {
-  console.log("uncaughtException on is detected, shutting down!");
-  process.exit(1);
+// 🚀 Start server with DB connection
+async function startServer() {
+  try {
+    await mongoose.connect(config.database_url);
+
+    server = app.listen(config.port, () => {
+      console.log(`🚀 Server running on http://localhost:${config.port}`);
+    });
+
+    server.on("error", (err) => {
+      console.error("❌ Server Error:", err);
+    });
+  } catch (error) {
+    console.error("❌ Failed to start server:", error);
+    process.exit(1);
+  }
+}
+
+startServer();
+
+// 🔴 Handle unhandled promise rejections
+process.on("unhandledRejection", (reason) => {
+  console.error("❌ Unhandled Rejection:", reason);
+
+  if (server) {
+    server.close(() => {
+      console.log("Server closed due to unhandled rejection");
+      process.exit(1);
+    });
+  } else {
+    process.exit(1);
+  }
 });

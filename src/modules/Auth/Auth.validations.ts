@@ -20,26 +20,11 @@ const registration = z.object({
       .min(6, "Password should be at least 6 characters"),
     role: z
       .string()
-      .refine(
-        (val) => ["USER", "ADMIN", "MODERATOR", "SUPER_ADMIN"].includes(val),
-        {
-          message: "Role must be one of USER, ADMIN, MODERATOR, SUPER_ADMIN",
-        }
-      )
+      .refine((val) => ["USER", "ADMIN", "SUPER_ADMIN"].includes(val), {
+        message: "Role must be one of USER, ADMIN, SUPER_ADMIN",
+      })
       .default("USER"),
-    status: z
-      .string()
-      .refine(
-        (val) =>
-          ["ACTIVE", "INACTIVE", "BLOCKED", "PENDING_VERIFICATION"].includes(
-            val
-          ),
-        {
-          message:
-            "Status must be one of ACTIVE, INACTIVE, BLOCKED, PENDING_VERIFICATION",
-        }
-      )
-      .default("ACTIVE"),
+    status: z.boolean().default(true),
   }),
 });
 
@@ -51,7 +36,31 @@ const refreshToken = z.object({
   }),
 });
 
+const changePassword = z.object({
+  body: z.object({
+    oldPassword: z.string().min(6),
+    newPassword: z.string().min(6),
+  }),
+});
+
+const forgetPassword = z.object({
+  body: z.object({
+    email: z.string().email(),
+  }),
+});
+
+const resetPassword = z.object({
+  body: z.object({
+    token: z.string(),
+    email: z.string().email(),
+    newPassword: z.string().min(6),
+  }),
+});
+
 export const AuthValidationSchemas = {
   registration,
   refreshToken,
+  changePassword,
+  forgetPassword,
+  resetPassword,
 };

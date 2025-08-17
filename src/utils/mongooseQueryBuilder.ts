@@ -46,9 +46,20 @@ class mongooseQueryBuilder<T> {
    */
   filter() {
     const excludeFields = ["searchTerm", "sort", "limit", "page", "fields"];
-    const filters = { ...this.query };
-    excludeFields.forEach((field) => delete filters[field]); // Exclude non-filter fields
-    this.modelQuery = this.modelQuery.find(filters as FilterQuery<T>); // Apply filters to the query
+    const filters: Record<string, unknown> = { ...this.query };
+
+    excludeFields.forEach((field) => delete filters[field]);
+
+    for (const key in filters) {
+      const value = filters[key];
+      if (value === "true") {
+        filters[key] = true;
+      } else if (value === "false") {
+        filters[key] = false;
+      }
+    }
+
+    this.modelQuery = this.modelQuery.find(filters as FilterQuery<T>);
     return this;
   }
 
@@ -58,7 +69,8 @@ class mongooseQueryBuilder<T> {
    * @returns The current instance of mongooseQueryBuilder for chaining.
    */
   sort() {
-    const sortBy = (this.query.sort as string)?.replace(/,/g, " ") || "-createdAt"; // Convert comma-separated sort fields into space-separated
+    const sortBy =
+      (this.query.sort as string)?.replace(/,/g, " ") || "-createdAt"; // Convert comma-separated sort fields into space-separated
     this.modelQuery = this.modelQuery.sort(sortBy); // Apply sorting
     return this;
   }
@@ -89,7 +101,9 @@ class mongooseQueryBuilder<T> {
    * @returns An object with `total` (number of documents) and `totalPage` (number of pages).
    */
   async countTotal() {
-    const total = await this.modelQuery.model.countDocuments(this.modelQuery.getFilter()); // Get total document count
+    const total = await this.modelQuery.model.countDocuments(
+      this.modelQuery.getFilter()
+    ); // Get total document count
     const limit = Math.max(Number(this.query.limit) || 10, 1); // Ensure limit is at least 1
     const totalPage = Math.ceil(total / limit); // Calculate total pages based on the limit
     return { total, totalPage };

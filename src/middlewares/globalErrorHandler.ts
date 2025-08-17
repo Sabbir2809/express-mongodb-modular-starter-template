@@ -17,8 +17,8 @@ const globalErrorHandler: ErrorRequestHandler = (
 ): void => {
   // default object
   const errorResponse: IErrorResponse = {
-    statusCode: error.statusCode || 500,
-    error: "Internal Server Error",
+    statusCode: error.statusCode ?? 500,
+    error: error.message ?? "Internal Server Error!",
     errorMessage: error.message,
     errorDetails:
       config.node_environment === "development" ? error.errors : null,

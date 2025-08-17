@@ -15,3 +15,7 @@ interface IErrorResponse {
   errorDetails: any | null;
   stack: any | null;
 }
+
+type CloudinaryImage = {
+  secure_url: string;
+};

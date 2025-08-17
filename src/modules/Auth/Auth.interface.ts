@@ -1,29 +1,29 @@
 export interface IUser {
-  id: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber: string;
-  isPhoneVerified: boolean;
+  fullName: string;
   email: string;
-  isEmailVerified: boolean;
   password: string;
   role: "USER" | "ADMIN" | "MODERATOR" | "SUPER_ADMIN";
-  status: "ACTIVE" | "INACTIVE" | "BLOCKED" | "PENDING_VERIFICATION";
-  profileImage?: string;
-  address?: string;
-  dateOfBirth?: Date;
-  gender?: "MALE" | "FEMALE" | "OTHER";
-  preferences?: {
-    language: string;
-    notificationsEnabled: boolean;
-  };
-  socialLinks?: {
-    facebook?: string;
-    twitter?: string;
-    instagram?: string;
-  };
-  lastLoginAt?: Date;
+  status: boolean;
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
+  // isEmailVerified: boolean;
+  // phoneNumber: string;
+  // isPhoneVerified: boolean;
+  // profileImage?: string;
+  // address?: string;
+  // dateOfBirth?: Date;
+  // gender?: "MALE" | "FEMALE" | "OTHER";
+  // preferences?: {
+  //   language: string;
+  //   notificationsEnabled: boolean;
+  // };
+  // socialLinks?: {
+  //   facebook?: string;
+  //   twitter?: string;
+  //   instagram?: string;
+  // };
+  // lastLoginAt?: Date;
+  // deletedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
-  deletedAt?: Date;
 }

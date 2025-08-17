@@ -27,4 +27,7 @@ export default {
   imagekit_public_key: process.env.IMAGEKIT_PUBLIC_KEY!,
   imagekit_public_url_endpoint_key:
     process.env.IMAGEKIT_PUBLIC_URL_ENDPOINT_KEY,
+
+  smtp_user: process.env.SMTP_USER,
+  smtp_password: process.env.SMTP_PASSWORD,
 };
