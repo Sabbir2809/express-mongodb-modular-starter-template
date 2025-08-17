@@ -11,13 +11,10 @@ import {
   generateResetPasswordEmailHTML,
   generateWelcomeEmailHTML,
 } from "./Auth.helpers";
+import { IUser } from "./Auth.interface";
 import { User } from "./Auth.model";
 
-const registrationIntoDB = async (payload: {
-  fullName: string;
-  email: string;
-  password: string;
-}) => {
+const registrationIntoDB = async (payload: IUser) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -92,10 +89,6 @@ const loginFromDB = async (payload: { email: string; password: string }) => {
   return {
     accessToken,
     refreshToken,
-    user: {
-      id: user._id,
-      role: user.role,
-    },
   };
 };
 

@@ -9,13 +9,15 @@
 ## Technology Stack
 
 - **Programming Language:** TypeScript
-- **Backend Framework:** Node.js, Express.js
-- **Database:** MongoDB (Mongoose)
-- **Authentication:** JWT (JSON Web Token)
+- **Framework:** Express.js
+- **Database:** MongoDB (Mongoose ODM)
+- **Authentication:** JWT (JSON Web Tokens)
 - **Password Hashing:** bcrypt
-- **Input Validation:** Zod
-- **Security:** Rate Limit, Helmet, Cors
-- **API Documentation:** Swagger, Postman
+- **Validation:** Zod
+- **Security:** Helmet, CORS, Rate Limiting
+- **File Uploads:** Multer + Cloudinary
+- **Email Service:** Nodemailer
+- **API Docs:** Swagger (swagger-jsdoc + swagger-ui-express)
 
 ## Project Setup Instructions
 
@@ -65,4 +67,6 @@
    ```bash
    yarn dev
    ```
-5. Open `http://localhost:5000` in your browser.
+5. **Start the server:** Open [http://localhost:5000](http://localhost:5000) in your browser to access the application.
+
+6. **View API Documentation:** Open [http://localhost:5000/api-docs](http://localhost:5000/api-docs) in your browser to explore and test all API endpoints via Swagger UI.
